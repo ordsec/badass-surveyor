@@ -18,6 +18,9 @@ passport.use(
       // route the user is sent to after granting permission
       callbackURL: '/auth/google/callback'
     },
+    // this callback function describes what we will do
+    // upon successfully authenticating the user through google
+    // and getting an access token back.
     accessToken => {
       console.log(accessToken);
     }
@@ -42,6 +45,18 @@ app.get(
     // must be used with passport and google!
     scope: ['profile', 'email']
   })
+);
+
+// this one handles sending a follow-up request to google after
+// user grants permission for app to access their data and google
+// kicks the user back to our app. this follow-up is the 'callback' -
+// passport exchanges the code with google for information about
+// the user.
+app.get(
+  '/auth/google/callback',
+  // in return for this, we receive an access token - the one
+  // that
+  passport.authenticate('google')
 );
 
 const PORT = process.env.PORT || 5000;
