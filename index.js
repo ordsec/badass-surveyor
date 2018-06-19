@@ -3,14 +3,17 @@ const express = require('express'),
 
 const mongoose = require('mongoose');
 
+// execute the User model file. this has to be done
+// before running any other files that rely on this model
+// (e.g. the passport file, which contains the script for
+// what to do when a user authenticates)
+require('./models/User');
+
 // execute that file, since there's nothing exported from it
 require('./services/passport');
 
 // import authRoutes.js and call it immediately with app obj
 require('./routes/authRoutes')(app);
-
-// execute the User model file
-require('./models/User');
 
 const keys = require('./config/keys');
 
