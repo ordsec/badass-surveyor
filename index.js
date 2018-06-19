@@ -9,6 +9,9 @@ require('./services/passport');
 // import authRoutes.js and call it immediately with app obj
 require('./routes/authRoutes')(app);
 
+// execute the User model file
+require('./models/User');
+
 const keys = require('./config/keys');
 
 // connect to mlab instance
