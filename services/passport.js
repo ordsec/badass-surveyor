@@ -26,10 +26,19 @@ passport.use(
     // and getting an access token back. this is our opportunity
     // to save the user in the database
     (accessToken, refreshToken, profile, done) => {
-      const user = new User({
-        googleID: profile.id
-      });
-      user.save();
+      User.findOne({ googleID: profile.id })
+        .then((existing) => {
+          if (existing) {
+            done(null, existing);
+          } else {
+            const newUser = new User({
+              googleID: profile.id
+            });
+            newUser.save()
+              .then(user => done(null, user));
+          }
+        })
+        .catch(e => console.log(e));
     }
   )
 );
