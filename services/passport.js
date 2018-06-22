@@ -16,7 +16,7 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// take the cookie (the user id) and fetches the profile
+// take the cookie (the user id) and fetch the profile
 passport.deserializeUser((id, done) => {
   User.findById(id)
     .then(user => done(null, user));

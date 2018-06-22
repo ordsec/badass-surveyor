@@ -2,6 +2,8 @@ const express = require('express'),
       app = express();
 
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
 
 // execute the User model file. this has to be done
 // before running any other files that rely on this model
@@ -19,6 +21,19 @@ const keys = require('./config/keys');
 
 // connect to mlab instance
 mongoose.connect(keys.mongoDevDbUri);
+
+// plug the cookie-session lib to make express use cookies
+app.use(cookieSession({
+  // how long the cookie lasts in the browser until it expires,
+  // in milliseconds :-D
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  // secret to sign the cookie. can be multiple - hence the array
+  keys: [keys.cookieKey]
+}));
+
+// activate passport for the app, with session support
+app.use(passport.initialize());
+app.use(passport.session());
 
 const PORT = process.env.PORT || 5000;
 
