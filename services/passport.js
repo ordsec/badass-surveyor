@@ -9,6 +9,19 @@ const keys = require('../config/keys');
 // would be required to put something into the DB
 const User = mongoose.model('users');
 
+// put a user's id into a cookie for further recognition.
+// this takes the user id from our Mongo database,
+// NOT the google profile id
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// take the cookie (the user id) and fetches the profile
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then(user => done(null, user));
+});
+
 // new instance of the google passport strategy -
 // we're about to authenticate users with google oauth.
 // when creating a new strategy, pass it the clientID
