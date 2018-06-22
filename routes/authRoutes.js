@@ -32,4 +32,8 @@ module.exports = app => {
     // that
     passport.authenticate('google')
   );
+
+  app.get('/api/current-user', (req, res) => {
+    res.send(req.user);
+  });
 };
