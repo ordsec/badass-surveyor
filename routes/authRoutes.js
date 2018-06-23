@@ -33,6 +33,12 @@ module.exports = app => {
     passport.authenticate('google')
   );
 
+  // route to log out
+  app.get('/api/logout', (req, res) => {
+    req.logout();
+    if (!req.user) res.send('logged out!');
+  });
+
   app.get('/api/current-user', (req, res) => {
     res.send(req.user);
   });

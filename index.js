@@ -9,7 +9,7 @@ const keys = require('./config/keys');
 // plug the cookie-session lib to make express use cookies
 app.use(cookieSession({
   // how long the cookie lasts in the browser until it expires,
-  // in milliseconds :-D
+  // 30 days in this case, expressed in milliseconds :-D
   maxAge: 30 * 24 * 60 * 60 * 1000,
   // secret to sign the cookie. can be multiple - hence the array
   keys: [keys.cookieKey]
