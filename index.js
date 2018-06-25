@@ -32,7 +32,7 @@ require('./services/passport');
 require('./routes/authRoutes')(app);
 
 // connect to mlab instance
-mongoose.connect(keys.mongoDevDbUri);
+mongoose.connect(keys.mongoDbUri);
 
 const PORT = process.env.PORT || 5000;
 
