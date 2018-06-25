@@ -9,7 +9,8 @@ const keys = require('../config/keys');
 // would be required to put something into the DB
 const User = mongoose.model('users');
 
-const BASE_URL = process.env.NODE_ENV === 'production' ?
+const BASE_URL =
+  process.env.NODE_ENV === 'production' ?
   process.env.BASE_URL :
   'http://localhost:5000';
 
