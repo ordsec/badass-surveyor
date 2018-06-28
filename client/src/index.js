@@ -5,9 +5,13 @@ import { createStore, applyMiddleware } from 'redux';
 
 import App from './components/App';
 
+import reducers from './reducers';
+
+const initialState = {};
+
 const store = createStore(
-  () => [],
-  {},
+  reducers,
+  initialState,
   applyMiddleware()
 );
 
