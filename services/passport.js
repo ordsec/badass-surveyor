@@ -39,24 +39,20 @@ passport.use(
       // route the user is sent to after granting permission
       callbackURL: `${BASE_URL}/auth/google/callback`,
     },
+    
     // this callback function describes what we will do
     // upon successfully authenticating the user through google
     // and getting an access token back. this is our opportunity
     // to save the user in the database
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleID: profile.id })
-        .then((existing) => {
-          if (existing) {
-            done(null, existing);
-          } else {
-            const newUser = new User({
-              googleID: profile.id
-            });
-            newUser.save()
-              .then(user => done(null, user));
-          }
-        })
-        .catch(e => console.log(e));
+    async (accessToken, refreshToke, profile, done) => {
+      const existing = await User.findOne({ googleID: profile.id });
+
+      // the user already exists
+      if (existing) return done(null, existing);
+
+      // the user doesn't exist (`existing` comes back undefined)
+      const newUser = await new User({ googleID: profile.id }).save();
+      done(null, newUser);
     }
   )
 );
