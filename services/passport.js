@@ -9,11 +9,6 @@ const keys = require('../config/keys');
 // would be required to put something into the DB
 const User = mongoose.model('users');
 
-const BASE_URL =
-  process.env.NODE_ENV === 'production' ?
-  process.env.BASE_URL :
-  'http://localhost:5000';
-
 // put a user's id into a cookie for further recognition.
 // this takes the user id from our Mongo database,
 // NOT the google profile id
@@ -37,9 +32,9 @@ passport.use(
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
       // route the user is sent to after granting permission
-      callbackURL: `${BASE_URL}/auth/google/callback`,
+      callbackURL: `/auth/google/callback`,
     },
-    
+
     // this callback function describes what we will do
     // upon successfully authenticating the user through google
     // and getting an access token back. this is our opportunity

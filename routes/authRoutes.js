@@ -28,9 +28,15 @@ module.exports = app => {
   // the user.
   app.get(
     '/auth/google/callback',
-    // in return for this, we receive an access token - the one
-    // that
-    passport.authenticate('google')
+    // once this route is reached, the redirect callback is executed -
+    // it means that authentication was successful, and the user will be
+    // redirected somewhere (e.g. dashboard). the below line calls on
+    // a piece of middleware.
+    passport.authenticate('google'),
+    // this is the redirect
+    (req, res) => {
+      res.redirect('/surveys');
+    }
   );
 
   // route to log out
