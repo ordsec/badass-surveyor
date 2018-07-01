@@ -42,7 +42,7 @@ module.exports = app => {
   // route to log out
   app.get('/api/logout', (req, res) => {
     req.logout();
-    if (!req.user) res.send('logged out!');
+    if (!req.user) res.redirect('/');
   });
 
   app.get('/api/current-user', (req, res) => {
