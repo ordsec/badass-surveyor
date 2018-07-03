@@ -18,6 +18,12 @@ module.exports = (app) => {
       source: req.body.id
     });
 
-    console.log(charge);
+    // the current user is already available on the
+    // req object, so we can easily access it
+    req.user.credits += 5;
+
+    const user = await req.user.save();
+
+    res.send(user);
   });
 };
