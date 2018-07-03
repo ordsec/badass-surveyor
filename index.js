@@ -31,6 +31,9 @@ require('./services/passport');
 // import authRoutes.js and call it immediately with app obj
 require('./routes/authRoutes')(app);
 
+// import billingRoutes.js and do the same
+require('./routes/billingRoutes')(app);
+
 // connect to mlab instance
 mongoose.connect(keys.mongoDbUri);
 

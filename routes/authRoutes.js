@@ -1,6 +1,6 @@
 const passport = require('passport');
 
-module.exports = app => {
+module.exports = (app) => {
   // route for where the user is gonna be directed
   // to start the authentication process
   app.get(
