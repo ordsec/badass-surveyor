@@ -11,6 +11,12 @@ module.exports = (app) => {
   // call is asynchronous. once the `charge` object
   // is received, the user has been billed.
   app.post('/api/stripe', async (req, res) => {
+    if (!req.user) {
+      return res.status(401).send({
+        error: 'You must be logged in to perform this action.'
+      });
+    }
+
     const charge = await stripe.charges.create({
       amount: 500,
       currency: 'usd',
