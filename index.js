@@ -2,9 +2,12 @@ const express = require('express'),
       app = express(),
       mongoose = require('mongoose'),
       cookieSession = require('cookie-session'),
-      passport = require('passport');
+      passport = require('passport'),
+      bodyParser = require('body-parser');
 
 const keys = require('./config/keys');
+
+app.use(bodyParser.json());
 
 // plug the cookie-session lib to make express use cookies
 app.use(cookieSession({
