@@ -2,6 +2,8 @@ const keys = require('../config/keys');
 
 const stripe = require('stripe')(keys.stripeSecretKey);
 
+const requireLogin = require('../middlewares/requireLogin');
+
 module.exports = (app) => {
 
   // create new charge based on the token that
@@ -10,13 +12,7 @@ module.exports = (app) => {
   // is in req.body.id. the `stripe.charges.create`
   // call is asynchronous. once the `charge` object
   // is received, the user has been billed.
-  app.post('/api/stripe', async (req, res) => {
-    if (!req.user) {
-      return res.status(401).send({
-        error: 'You must be logged in to perform this action.'
-      });
-    }
-
+  app.post('/api/stripe', requireLogin, async (req, res) => {
     const charge = await stripe.charges.create({
       amount: 500,
       currency: 'usd',
