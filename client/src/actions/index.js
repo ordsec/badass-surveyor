@@ -13,3 +13,14 @@ export const fetchUser = () => async (dispatch) => {
 
   dispatch({ type: FETCH_USER, payload: res.data });
 };
+
+// this action is responsible for sending a POST request
+// to our backend API with the token we get from stripe
+// as a result of submitting a payment. the back end will
+// respond with a user model instance that will have the
+// updated `credits` property
+export const handleToken = (token) => async (dispatch) => {
+  const res = await axios.post('/api/stripe', token);
+
+  dispatch({ type: FETCH_USER, payload: res.data });
+};
