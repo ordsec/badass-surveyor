@@ -28,6 +28,8 @@ app.use(passport.session());
 // what to do when a user authenticates)
 require('./models/User');
 
+require('./models/Survey');
+
 // execute that file, since there's nothing exported from it
 require('./services/passport');
 
