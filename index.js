@@ -22,12 +22,11 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// execute the User model file. this has to be done
+// execute all model files. this has to be done
 // before running any other files that rely on this model
 // (e.g. the passport file, which contains the script for
 // what to do when a user authenticates)
 require('./models/User');
-
 require('./models/Survey');
 
 // execute that file, since there's nothing exported from it
