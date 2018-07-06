@@ -32,11 +32,11 @@ require('./models/Survey');
 // execute that file, since there's nothing exported from it
 require('./services/passport');
 
-// import authRoutes.js and call it immediately with app obj
+// import routes and call the imported functions immediately
+// with the `app` object we got back from `express()`
 require('./routes/authRoutes')(app);
-
-// import billingRoutes.js and do the same
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 // connect to mlab instance
 mongoose.connect(keys.mongoDbUri);
