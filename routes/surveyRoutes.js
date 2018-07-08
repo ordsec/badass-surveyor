@@ -8,6 +8,12 @@ const requireCredits = require('../middlewares/requireCredits');
 const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
+  // this route handler takes care of a few things:
+  // 0. checking if the user is logged in and has credits via
+  //    our custom middleware
+  // 1. creating a Survey object with data submitted by the user
+  // 2. sending the email to all of the recipients added by the user
+  // 3. persisting the survey object in the database
   app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
     const { title, subject, body, recipients } = req.body;
 
