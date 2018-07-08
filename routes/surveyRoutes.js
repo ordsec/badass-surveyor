@@ -16,8 +16,12 @@ module.exports = (app) => {
       subject,
       body,
       // recipients will come in as one comma-separated string.
-      // split it at commas and turn each element into an object
-      recipients: recipients.split(',').map((email) => ({ email })),
+      // split it at commas and turn each element into an object.
+      // as a result, it will be an array of Recipient instances
+      // as prescribed by the Survey schema
+      recipients: recipients.split(',').map((email) => {
+        return { email: email.trim() };
+      }),
       // this must be the ID of the current user and not just the
       // user object
       _user: req.user.id,
