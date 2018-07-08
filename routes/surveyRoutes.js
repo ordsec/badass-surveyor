@@ -7,6 +7,9 @@ const requireCredits = require('../middlewares/requireCredits');
 // testing issues
 const Survey = mongoose.model('surveys');
 
+const Mailer = require('../services/Mailer');
+const surveyTemplate = ('../services/emailTemplates/surveyTemplate');
+
 module.exports = (app) => {
   // this route handler takes care of a few things:
   // 0. checking if the user is logged in and has credits via
@@ -33,5 +36,8 @@ module.exports = (app) => {
       _user: req.user.id,
       dateSent: Date.now()
     });
+
+    // handle sending emails
+    const mailer = new Mailer(survey, surveyTemplate(survey));
   });
 };
