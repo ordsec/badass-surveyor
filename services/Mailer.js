@@ -1,3 +1,5 @@
+// I DON'T KNOW WHAT'S GOING ON UGH
+
 const sendgrid = require('sendgrid'),
       helper = sendgrid.mail;
 
@@ -8,6 +10,7 @@ class Mailer extends helper.Mail {
   constructor({ subject, recipients }, content) {
     super();
 
+    this.sgApi = sendgrid(keys.sendGridKey);
     this.from_email = new helper.Email('noreply@badass-surveyor.com');
     this.subject = subject;
     this.body = new helper.Content('text/html', content);
@@ -47,6 +50,19 @@ class Mailer extends helper.Mail {
       personalize.addTo(rcpt);
     });
     this.addPersonalization(personalize);
+  }
+
+  // handle sending actual emails
+  async send() {
+    const request = this.sgApi.emptyRequest({
+      method: 'POST',
+      path: '/v3/mail/send',
+      body: this.toJSON()
+    });
+
+    this.sgApi.API(request);
+
+    return response;
   }
 }
 
