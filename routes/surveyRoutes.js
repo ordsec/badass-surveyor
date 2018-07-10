@@ -8,7 +8,7 @@ const requireCredits = require('../middlewares/requireCredits');
 const Survey = mongoose.model('surveys');
 
 const Mailer = require('../services/Mailer');
-const surveyTemplate = ('../services/emailTemplates/surveyTemplate');
+const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
   // this route handler takes care of a few things:
@@ -38,6 +38,7 @@ module.exports = (app) => {
     });
 
     // handle sending emails
-    const mailer = new Mailer(survey, surveyTemplate(survey));
+    const mailer = new Mailer(newSurvey, surveyTemplate(newSurvey));
+    mailer.send();
   });
 };
