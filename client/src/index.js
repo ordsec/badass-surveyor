@@ -9,6 +9,10 @@ import App from './components/App';
 
 import reducers from './reducers';
 
+// DEV ONLY - REMOVE LATER
+import axios from 'axios';
+window.axios = axios;
+
 const initialState = {};
 
 const store = createStore(
