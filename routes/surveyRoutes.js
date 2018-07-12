@@ -17,7 +17,7 @@ module.exports = (app) => {
   // 1. creating a Survey object with data submitted by the user
   // 2. sending the email to all of the recipients added by the user
   // 3. persisting the survey object in the database
-  app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+  app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
     const { title, subject, body, recipients } = req.body;
 
     const newSurvey = new Survey({
@@ -39,6 +39,22 @@ module.exports = (app) => {
 
     // handle sending emails
     const mailer = new Mailer(newSurvey, surveyTemplate(newSurvey));
-    mailer.send();
+
+    try {
+      await mailer.send();
+
+      // save the survey (no return value, so no need to assign the
+      // await to a variable)
+      await newSurvey.save();
+
+      // deduct one credit
+      req.user.credits -= 1;
+
+      // persist the updated user and save to a variable to send it back
+      const user = await req.user.save();
+      res.send(user);
+    } catch (e) {
+      res.status(422).send(e);
+    }
   });
 };
