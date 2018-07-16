@@ -46,7 +46,7 @@ class SurveyForm extends Component {
           </Link>
           <button type="submit" className="teal btn-flat right white-text">
             NEXT
-            <i className="material-icons right">done</i>
+            <i className="material-icons right">chevron_right</i>
           </button>
         </form>
       </div>
