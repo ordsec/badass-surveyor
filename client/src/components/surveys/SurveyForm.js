@@ -71,5 +71,6 @@ const validate = (values) => {
 // similar to `connect`
 export default reduxForm({
   validate,
-  form: 'surveyForm'
+  form: 'surveyForm',
+  destroyOnUnmount: false
 })(SurveyForm);
