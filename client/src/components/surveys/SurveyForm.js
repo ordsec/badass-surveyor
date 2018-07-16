@@ -9,7 +9,11 @@ const FIELDS = [
   { label: 'Survey Title', name: 'title' },
   { label: 'Subject Line', name: 'subject' },
   { label: 'Email Body', name: 'body' },
-  { label: 'Recipient List', name: 'recipients' }
+  {
+    label: 'Recipient List',
+    name: 'recipients',
+    noValue: 'Please provide at least one recipient!'
+  }
 ];
 
 class SurveyForm extends Component {
@@ -52,7 +56,11 @@ class SurveyForm extends Component {
 const validate = (values) => {
   const errors = {};
 
-  if (!values.title) errors.title = 'Title is required!';
+  _.each(FIELDS, ({ name, noValue }) => {
+    if (!values[name]) {
+      errors[name] = noValue || `You must provide a ${name}`;
+    }
+  });
 
   return errors;
 };
