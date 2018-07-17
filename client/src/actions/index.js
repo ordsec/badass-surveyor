@@ -15,7 +15,7 @@ export const fetchUser = () => async (dispatch) => {
 };
 
 // this action is responsible for sending a POST request
-// to our backend API with the token we get from stripe
+// to our back end API with the token we get from stripe
 // as a result of submitting a payment. the back end will
 // respond with a user model instance that will have the
 // updated `credits` property
@@ -25,6 +25,11 @@ export const handleToken = (token) => async (dispatch) => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
+// send POST request to the `/api/surveys` route of our
+// back end API with the payload of `values`, which is
+// what we receive from the new survey form via redux-form.
+// once again, we receive the updated user model instance
+// with the updated number of credits (one subtracted)
 export const submitSurvey = (values, history) => async (dispatch) => {
   const res = await axios.post('/api/surveys', values);
 
