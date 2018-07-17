@@ -62,5 +62,8 @@ const validate = (values) => {
 export default reduxForm({
   validate,
   form: 'surveyForm',
+  // do not get rid of form content when component is unmounted
+  // (allows to go to SurveyFormReview and back without losing
+  // the data)
   destroyOnUnmount: false
 })(SurveyForm);
