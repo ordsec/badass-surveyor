@@ -11,6 +11,14 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
+  // receive click data from sendgrid to show survey stats
+  // on the client side
+  app.post('/api/surveys/webhooks', (req, res) => {
+    console.log(req.body);
+
+    res.send({});
+  });
+
   // this route handler takes care of a few things:
   // 0. checking if the user is logged in and has credits via
   //    our custom middleware
