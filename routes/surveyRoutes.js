@@ -19,6 +19,12 @@ module.exports = (app) => {
     res.send({});
   });
 
+  app.get('/api/surveys/yourock', (req, res) => {
+    res.send({
+      message: 'Your feedback is SO important to us! :D'
+    });
+  });
+
   // this route handler takes care of a few things:
   // 0. checking if the user is logged in and has credits via
   //    our custom middleware
