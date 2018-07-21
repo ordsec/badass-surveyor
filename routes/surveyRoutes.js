@@ -1,4 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+      _ = require('lodash'),
+      Path = require('path-parser').default,
+      { URL } = require('url');
 
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -14,9 +17,23 @@ module.exports = (app) => {
   // receive click data from sendgrid to show survey stats
   // on the client side
   app.post('/api/surveys/webhooks', (req, res) => {
-    console.log(req.body);
+    const p = new Path('/api/surveys/:surveyId/:choice');
 
-    res.send({});
+    const events = _.map(req.body, ({ email, url }) => {
+      const match = p.test(new URL(url).pathname);
+      if (match) return {
+        email,
+        surveyId: match.surveyId,
+        choice: match.choice
+      };
+    });
+
+    const compactEvents = _.compact(events);
+    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
+
+    console.log(uniqueEvents);
+
+    res.send({ message: 'ok cool thx' });
   });
 
   app.get('/api/surveys/yourock', (req, res) => {
