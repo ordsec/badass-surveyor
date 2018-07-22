@@ -14,6 +14,12 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
+  app.get('/api/surveys/:surveyId/:choice', (req, res) => {
+    res.send({
+      message: 'Your feedback is SO important to us.'
+    });
+  });
+  
   // receive click data from sendgrid to show survey stats
   // on the client side, update the stats in our DB.
   // there is no need for any async action in this one,
@@ -65,18 +71,13 @@ module.exports = (app) => {
           // lines up with `$elemMatch` from above),
           // and updating its `responded` property
           // to true
-          $set: { 'recipients.$.responded': true }
+          $set: { 'recipients.$.responded': true },
+          lastResponded: new Date()
         }).exec();
       })
       .value();
 
     res.send({ message: 'ok cool thx' });
-  });
-
-  app.get('/api/surveys/yourock', (req, res) => {
-    res.send({
-      message: 'Your feedback is SO important to us! :D'
-    });
   });
 
   // this route handler takes care of a few things:
