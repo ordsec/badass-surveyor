@@ -14,12 +14,18 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
+  app.get('/api/surveys', requireLogin, async (req, res) => {
+    const surveys = await Survey.find({ _user: req.user.id });
+
+    res.send(surveys);
+  });
+
   app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send({
       message: 'Your feedback is SO important to us.'
     });
   });
-  
+
   // receive click data from sendgrid to show survey stats
   // on the client side, update the stats in our DB.
   // there is no need for any async action in this one,
