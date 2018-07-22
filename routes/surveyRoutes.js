@@ -15,7 +15,21 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
   app.get('/api/surveys', requireLogin, async (req, res) => {
-    const surveys = await Survey.find({ _user: req.user.id });
+    // this approach will get us all of the surveys made by
+    // current user (req.user), INCLUDING all of the recipients.
+    // not great because there might be 10000 recipients, and the
+    // resulting blob of data will be totally enormous
+
+    // const surveys = await Survey.find({ _user: req.user.id });
+    //
+    // res.send(surveys);
+
+    // the #find method returns a query object that we can then
+    // customize using Query#select (this is called a projection).
+    // we pass it an object that tells mongoose which fields
+    // we do NOT want - no more recipients, no more extra data :D
+    const surveys = await Survey.find({ _user: req.user.id })
+      .select({ recipients: false });
 
     res.send(surveys);
   });
