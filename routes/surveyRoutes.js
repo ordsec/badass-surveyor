@@ -1,4 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+      _ = require('lodash'),
+      Path = require('path-parser').default,
+      { URL } = require('url');
 
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -11,6 +14,72 @@ const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 module.exports = (app) => {
+  app.get('/api/surveys/:surveyId/:choice', (req, res) => {
+    res.send({
+      message: 'Your feedback is SO important to us.'
+    });
+  });
+  
+  // receive click data from sendgrid to show survey stats
+  // on the client side, update the stats in our DB.
+  // there is no need for any async action in this one,
+  // since sendgrid doesn't care about the response
+  // it'll receive, or even if there is a response.
+  app.post('/api/surveys/webhooks', (req, res) => {
+    const p = new Path('/api/surveys/:surveyId/:choice');
+
+    _.chain(req.body)
+      .map(({ email, url }) => {
+        const match = p.test(new URL(url).pathname);
+        if (match) return {
+          email,
+          surveyId: match.surveyId,
+          choice: match.choice
+        };
+      })
+      .compact()
+      .uniqBy('email', 'surveyId')
+      .each(({ surveyId, email, choice }) => {
+        // query to find a survey to update:
+        // we need a survey with the given ID,
+        // and whose recipients contain one
+        // with the given email; this recipient
+        // shouldn't have responded yet.
+        // update the record immediately
+        Survey.updateOne({
+          _id: surveyId,
+          recipients: {
+            // find the appropriate subdoc
+            $elemMatch: {
+              email, responded: false
+            }
+          }
+        }, {
+          // $inc is a mongo operator: find the
+          // `choice` property and increment it
+          // by one (that's what the `inc` is for).
+          // we abstract the value of `choice`
+          // by using key interpolation, so that
+          // whatever it is ('yes' or 'no'), it
+          // will be incremented
+          $inc: { [choice]: 1 },
+          // update one of the properties of the
+          // Survey instance we're working with.
+          // in this case, we're looking at a subdoc,
+          // so we are looking at the `recipients`,
+          // taking the one recipient we need (the $
+          // lines up with `$elemMatch` from above),
+          // and updating its `responded` property
+          // to true
+          $set: { 'recipients.$.responded': true },
+          lastResponded: new Date()
+        }).exec();
+      })
+      .value();
+
+    res.send({ message: 'ok cool thx' });
+  });
+
   // this route handler takes care of a few things:
   // 0. checking if the user is logged in and has credits via
   //    our custom middleware
