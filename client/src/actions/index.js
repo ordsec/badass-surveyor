@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { FETCH_USER } from './types';
+import { FETCH_USER, FETCH_SURVEYS } from './types';
 
 // with redux-thunk, this action generator returns
 // a function rather than an action object. the returned
@@ -36,4 +36,11 @@ export const submitSurvey = (values, history) => async (dispatch) => {
   history.push('/surveys');
 
   dispatch({ type: FETCH_USER, payload: res.data });
+};
+
+// pull all of the current user's surveys from the API
+export const fetchSurveys = () => async (dispatch) => {
+  const res = await axios.get('/api/surveys');
+
+  dispatch({ type: FETCH_SURVEYS, payload: res.data });
 };
