@@ -12,14 +12,14 @@ class SurveyList extends Component {
   renderSurveys() {
     if (!this.props.surveys.length) {
       return (
-        <h5 style={{ 'text-align': 'center' }}>
+        <h5 style={{ textAlign: 'center' }}>
           No surveys yet!&nbsp;
           <Link to="/surveys/new">Create one</Link>, perhaps?
         </h5>
       );
     }
 
-    return this.props.surveys.map((survey, idx) => {
+    return this.props.surveys.reverse().map((survey, idx) => {
       return (<div className="card deep-orange lighten-5" key={idx}>
         <div className="card-content">
           <span className="card-title">{survey.title}</span>
