@@ -1,5 +1,7 @@
 ## Badass Surveyor
 
+https://badass-surveyor.herokuapp.com
+
 ### Functionality
 The application allows a user to create and send out surveys to collect feedback about an application
 (or anything, really). The service is paid - each survey costs one credit, and the cost per credit is
@@ -47,3 +49,5 @@ API services the app relies upon:
 - Google Auth
 - SendGrid (for emails)
 - Stripe (for payments)
+
+(c) 2018 Made with <3 by David Ordovskiy
